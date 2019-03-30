@@ -27,11 +27,11 @@ type DeviceListOptions struct {
 	ID           string   `url:"id"`
 	GroupIds     []string `url:"groupIds"`
 	Deep         bool     `url:"deep"`
-	DeviceTypeId string   `url:"deviceTypeId"`
-	OperatorId   string   `url:"operatorId"`
+	DeviceTypeID string   `url:"deviceTypeId"`
+	OperatorID   string   `url:"operatorId"`
 	Sort         string   `url:"sort"`
-	MinId        string   `url:"minId"`
-	MaxId        string   `url:"maxId"`
+	MinID        string   `url:"minId"`
+	MaxID        string   `url:"maxId"`
 	Fields       []string `url:"fields"`
 	Limit        int32    `url:"limit"`
 	Offset       int32    `url:"offset"`
@@ -124,4 +124,30 @@ func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, opt *
 	}
 
 	return &messages, nil
+}
+
+type DeviceMetric struct {
+	LastDay   int32 `json:"lastDay"`
+	LastWeek  int32 `json:"lastWeek"`
+	LastMonth int32 `json:"lastMonth"`
+}
+
+func (s *DevicesService) GetMetric(ctx context.Context, deviceID string) (*DeviceMetric, error) {
+	spath := fmt.Sprintf("/devices/%s/messages/metric", deviceID)
+
+	req, err := s.client.newRequest(ctx, "GET", spath, nil)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var deviceMetric DeviceMetric
+	if err := decodeBody(res, &deviceMetric); err != nil {
+		return nil, err
+	}
+
+	return &deviceMetric, nil
 }
