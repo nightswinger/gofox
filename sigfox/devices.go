@@ -101,6 +101,34 @@ func (s *DevicesService) GetInfo(ctx context.Context, deviceID string) (*Device,
 	return &device, nil
 }
 
+type UpdateDeviceBody struct {
+	Name                  string  `json:"name,omitempty"`
+	Lat                   float64 `json:"lat,omitempty"`
+	Lng                   float64 `json:"lng,omitempty"`
+	ProductCertificateKey string  `json:"productCertificateKey,omitempty"`
+	Prototype             bool    `json:"prototype,omitempty"`
+	AutomaticRenewal      bool    `json:"automaticRenewal,omitempty"`
+	Activable             bool    `json:"activable,omitempty"`
+}
+
+func (s *DevicesService) UpdateDevice(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
+	spath := fmt.Sprintf("/devices/%s", deviceID)
+
+	req, err := s.client.newRequest(ctx, "PUT", spath, body)
+	if err != nil {
+		return err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(req.Body, res)
+
+	return nil
+}
+
 func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, opt *DeviceMessagesOptions) (*DeviceMessages, error) {
 	spath := fmt.Sprintf("/devices/%s/messages", deviceID)
 	spath, err := addOptions(spath, opt)

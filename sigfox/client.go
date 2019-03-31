@@ -1,6 +1,7 @@
 package sigfox
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"io"
@@ -58,11 +59,20 @@ func NewClient(login, password string) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) newRequest(ctx context.Context, method, spath string, body io.Reader) (*http.Request, error) {
+func (c *Client) newRequest(ctx context.Context, method, spath string, body interface{}) (*http.Request, error) {
 	u := *c.baseURL
 	u.Path = path.Join(c.baseURL.Path, spath)
 
-	req, err := http.NewRequest(method, u.String(), body)
+	var buf *bytes.Buffer
+	if body != nil {
+		b, err := json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
+		buf = bytes.NewBuffer(b)
+	}
+
+	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
