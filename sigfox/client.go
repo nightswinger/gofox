@@ -63,8 +63,9 @@ func (c *Client) newRequest(ctx context.Context, method, spath string, body inte
 	u := *c.baseURL
 	u.Path = path.Join(c.baseURL.Path, spath)
 
-	var buf *bytes.Buffer
+	var buf io.ReadWriter
 	if body != nil {
+		buf = new(bytes.Buffer)
 		b, err := json.Marshal(body)
 		if err != nil {
 			return nil, err

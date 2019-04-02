@@ -119,12 +119,10 @@ func (s *DevicesService) UpdateDevice(ctx context.Context, deviceID string, body
 		return err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	_, err = s.client.HTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(req.Body, res)
 
 	return nil
 }
