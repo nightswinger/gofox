@@ -134,7 +134,7 @@ func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID s
 	if err != nil {
 		return err
 	}
-	res, err := s.client.HTTPClient.Do(req)
+	_, err = s.client.HTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
