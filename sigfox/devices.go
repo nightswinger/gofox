@@ -127,6 +127,67 @@ func (s *DevicesService) UpdateDevice(ctx context.Context, deviceID string, body
 	return nil
 }
 
+type UndeliveredCallbacksOptions struct {
+	Since  int64 `url:"since,omitempty"`
+	Before int64 `url:"before,omitempty"`
+	Limit  int32 `url:"limit,omitempty"`
+	Offset int32 `url:"offset,omitempty"`
+}
+
+type UndeliveredCallbacks struct {
+	Data   []*Hosts   `json:"data"`
+	Paging Pagination `json:"paging"`
+}
+
+type Hosts struct {
+	Device     string          `json:"device"`
+	DeviceURL  string          `json:"deviceUrl"`
+	DeviceType string          `json:"deviceType"`
+	Time       int64           `json:"time"`
+	Data       string          `json:"data"`
+	Snr        string          `json:"snr"`
+	Status     string          `json:"status"`
+	Message    string          `json:"message"`
+	Callback   *CallbackMedium `json:"callbackMedium"`
+	//Parameters
+}
+
+type CallbackMedium struct {
+	Subject string `json:"subject"`
+	Message string `json:"message"`
+	URL     string `json:"url"`
+	//Headers
+	Body        string `json:"body"`
+	ContentType string `json:"contentType"`
+	Method      string `json:"method"`
+	Error       string `json:"error"`
+}
+
+func (s *DevicesService) ListUndeliveredCallbacks(ctx context.Context, deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
+	spath := fmt.Sprintf("/devices/%s/callbacks-not-delivered", deviceID)
+	spath, err := addOptions(spath, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := s.client.newRequest(ctx, "GET", spath, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var listUndelivered UndeliveredCallbacks
+	if err := decodeBody(res, &listUndelivered); err != nil {
+		return nil, err
+	}
+
+	return &listUndelivered, nil
+}
+
 func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID string) error {
 	spath := fmt.Sprintf("/devices/%s/disengage", deviceID)
 
