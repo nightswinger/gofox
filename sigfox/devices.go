@@ -68,19 +68,6 @@ func (s *DevicesService) List(ctx context.Context, opt *DeviceListOptions) (*Lis
 	return &listDevices, nil
 }
 
-type DeviceMessages struct {
-	Data []Message `json:"data"`
-}
-
-type DeviceMessagesOptions struct {
-	Limit int `url:"limit"`
-}
-
-type Message struct {
-	Time int    `json:"time"`
-	Data string `json:"data"`
-}
-
 func (s *DevicesService) GetInfo(ctx context.Context, deviceID string) (*Device, error) {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
@@ -201,6 +188,19 @@ func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID s
 	}
 
 	return nil
+}
+
+type DeviceMessagesOptions struct {
+	Limit int `url:"limit"`
+}
+
+type DeviceMessages struct {
+	Data []Message `json:"data"`
+}
+
+type Message struct {
+	Time int    `json:"time"`
+	Data string `json:"data"`
 }
 
 func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, opt *DeviceMessagesOptions) (*DeviceMessages, error) {
