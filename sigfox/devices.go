@@ -205,7 +205,7 @@ type DeviceMessages struct {
 
 type Message struct {
 	Device       Device `json:"device,omitempty"`
-	Time         int    `json:"time,omitempty"`
+	Time         int64  `json:"time,omitempty"`
 	Data         string `json:"data,omitempty"`
 	AckRequired  bool   `json:"ackRequired,omitempty"`
 	Lqi          int32  `json:"lqi,omitempty"`
