@@ -191,16 +191,56 @@ func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID s
 }
 
 type DeviceMessagesOptions struct {
-	Limit int `url:"limit"`
+	Fields string `url:"fields"`
+	Since  int64  `url:"since"`
+	Before int64  `url:"before"`
+	Limit  int    `url:"limit"`
+	Offset int32  `url:"offset"`
 }
 
 type DeviceMessages struct {
-	Data []Message `json:"data"`
+	Data   []Message  `json:"data,omitempty"`
+	Paging Pagination `json:"paging,omitempty"`
 }
 
 type Message struct {
-	Time int    `json:"time"`
-	Data string `json:"data"`
+	Device       Device `json:"device,omitempty"`
+	Time         int    `json:"time,omitempty"`
+	Data         string `json:"data,omitempty"`
+	AckRequired  bool   `json:"ackRequired,omitempty"`
+	Lqi          int32  `json:"lqi,omitempty"`
+	LqiRepeaters int32  `json:"lqiRepeaters,omitempty"`
+	SeqNumber    int32  `json:"seqNumber,omitempty"`
+	NbFrames     int32  `json:"nbFrames,omitempty"`
+	//ComputedLocation
+	Rinfos []Rinfo `json:"rinfos,omitempty"`
+	//DownlinkAnserStatus
+}
+
+type Rinfo struct {
+	BaseStation   MinBaseStation `json:"baseStation,omitempty"`
+	Rssi          string         `json:"rssi,omitempty"`
+	RssiRepeaters string         `json:"rssiRepeaters"`
+	Lat           string         `json:"lat,omitempty"`
+	Lng           string         `json:"lng,omitempty"`
+	Snr           string         `json:"snr,omitempty"`
+	SnrRepeaters  string         `json:"snrRepeaters,omitempty"`
+	Freq          float64        `json:"freq,omitempty"`
+	FreqRepeaters float64        `json:"freqReaters"`
+	Rep           int32          `json:"rep,omitempty"`
+	CbStatus      []CbStatus     `json:"cbStatus,omitempty"`
+}
+
+type MinBaseStation struct {
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+}
+
+type CbStatus struct {
+	Status int32  `json:"status,omitempty"`
+	Info   string `json:"string,omitempty"`
+	CbDef  string `json:"cbDef,omitempty"`
+	Time   int64  `json:"time,omitempty"`
 }
 
 func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, opt *DeviceMessagesOptions) (*DeviceMessages, error) {
