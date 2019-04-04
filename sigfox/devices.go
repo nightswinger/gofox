@@ -191,11 +191,11 @@ func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID s
 }
 
 type DeviceMessagesOptions struct {
-	Fields string `url:"fields"`
-	Since  int64  `url:"since"`
-	Before int64  `url:"before"`
-	Limit  int    `url:"limit"`
-	Offset int32  `url:"offset"`
+	Fields string `url:"fields,omitempty"`
+	Since  int64  `url:"since,omitempty"`
+	Before int64  `url:"before,omitempty"`
+	Limit  int    `url:"limit,omitempty"`
+	Offset int32  `url:"offset,omitempty"`
 }
 
 type DeviceMessages struct {
