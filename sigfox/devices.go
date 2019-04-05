@@ -68,6 +68,41 @@ func (s *DevicesService) List(ctx context.Context, opt *DeviceListOptions) (*Lis
 	return &listDevices, nil
 }
 
+type CreateDeviceBody struct {
+	ID                    string  `json:"id"`
+	Name                  string  `json:"name"`
+	DeviceTypeID          string  `json:"deviceTypeId"`
+	PAC                   string  `json:"pac"`
+	Lat                   float64 `json:"lat,omitempty"`
+	Lng                   float64 `json:"lng,omitempty"`
+	ProductCertificateKey string  `json:"productCertificateKey,omitempty"`
+	Prototype             bool    `json:"prototype,omitempty"`
+	AutomaticRenewal      bool    `json:"automaticRenewal,omitempty"`
+	Activable             bool    `json:"activable,omitempty"`
+}
+
+type CreateDeviceOutput struct {
+	ID string `json:"id"`
+}
+
+func (s *DevicesService) Create(ctx context.Context, body *CreateDeviceBody) (*CreateDeviceOutput, error) {
+	req, err := s.client.newRequest(ctx, "POST", "/devices", body)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var output CreateDeviceOutput
+	if err := decodeBody(res, &output); err != nil {
+		return nil, err
+	}
+	return &output, nil
+}
+
 func (s *DevicesService) GetInfo(ctx context.Context, deviceID string) (*Device, error) {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
