@@ -328,3 +328,44 @@ func (s *DevicesService) GetMetric(ctx context.Context, deviceID string) (*Devic
 
 	return &deviceMetric, nil
 }
+
+type CreateMultipleDevicesBody struct {
+	DeviceTypeID          string                `json:"deviceTypeId"`
+	Prefix                string                `json:"prefix,omitempty"`
+	ProductCertificateKey string                `json:"productCertificateKey,omitempty"`
+	Prototype             string                `json:"prototype,omitempty"`
+	Activable             bool                  `json:"activable,omitempty"`
+	Devices               []*DeviceCreationBulk `json:"devices"`
+}
+
+type DeviceCreationBulk struct {
+	ID               string  `json:"id"`
+	Name             string  `json:"name"`
+	PAC              string  `json:"pac"`
+	Lat              float64 `json:"lat,omitempty"`
+	Lng              float64 `json:"lng,omitempty"`
+	AutomaticRenewal bool    `json:"automaticRenewal,omitempty"`
+}
+
+type CreateMultipleDevicesOutput struct {
+	Total int32  `json:"total,omitempty"`
+	JobID string `json:"jobId,omitempty"`
+}
+
+func (s *DevicesService) CreateMultipleWithAsync(ctx context.Context, body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
+	req, err := s.client.newRequest(ctx, "POST", "/devices/bulk", body)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var output CreateMultipleDevicesOutput
+	if err := decodeBody(res, &output); err != nil {
+		return nil, err
+	}
+	return &output, nil
+}
