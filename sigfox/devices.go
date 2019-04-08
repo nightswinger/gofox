@@ -8,19 +8,19 @@ import (
 type DevicesService service
 
 type Device struct {
-	ID                  string  `json:"id"`
-	Name                string  `json:"name"`
-	Prototype           bool    `json:"prototype"`
-	PAC                 string  `json:"pac"`
-	SequenceNumber      int32   `json:"sequenceNumber"`
-	TrashSequenceNumber int32   `json:"trashSequenceNumber"`
-	LastCom             int     `json:"lastCom"`
-	AverageSnr          float32 `json:"averageSnr"`
-	AverageRssi         float32 `json:"averageRssi"`
-	ActivationTime      int64   `json:"activationTime"`
-	CreationTime        int64   `json:"creationTime"`
-	State               int32   `json:"state"`
-	ComState            int32   `json:"comState"`
+	ID                  string `json:"id,omitempty"`
+	Name                string `json:"name,omitempty"`
+	Prototype           bool   `json:"prototype,omitempty"`
+	PAC                 string `json:"pac,omitempty"`
+	SequenceNumber      int32  `json:"sequenceNumber,omitempty"`
+	TrashSequenceNumber int32  `json:"trashSequenceNumber,omitempty"`
+	LastCom             int    `json:"lastCom,omitempty"`
+	AverageSnr          string `json:"averageSnr,omitempty"`
+	AverageRssi         string `json:"averageRssi,omitempty"`
+	ActivationTime      int64  `json:"activationTime,omitempty"`
+	CreationTime        int64  `json:"creationTime,omitempty"`
+	State               int32  `json:"state,omitempty"`
+	ComState            int32  `json:"comState,omitempty"`
 }
 
 type DeviceListOptions struct {
