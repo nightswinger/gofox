@@ -25,18 +25,18 @@ type Device struct {
 }
 
 type DeviceListOptions struct {
-	ID           string   `url:"id"`
-	GroupIds     []string `url:"groupIds"`
-	Deep         bool     `url:"deep"`
-	DeviceTypeID string   `url:"deviceTypeId"`
-	OperatorID   string   `url:"operatorId"`
-	Sort         string   `url:"sort"`
-	MinID        string   `url:"minId"`
-	MaxID        string   `url:"maxId"`
-	Fields       []string `url:"fields"`
-	Limit        int32    `url:"limit"`
-	Offset       int32    `url:"offset"`
-	PageId       string   `url:"pageId"`
+	ID           string   `url:"id,omitempty"`
+	GroupIds     []string `url:"groupIds,omitempty"`
+	Deep         bool     `url:"deep,omitempty"`
+	DeviceTypeID string   `url:"deviceTypeId,omitempty"`
+	OperatorID   string   `url:"operatorId,omitempty"`
+	Sort         string   `url:"sort,omitempty"`
+	MinID        string   `url:"minId,omitempty"`
+	MaxID        string   `url:"maxId,omitempty"`
+	Fields       []string `url:"fields,omitempty"`
+	Limit        int32    `url:"limit,omitempty"`
+	Offset       int32    `url:"offset,omitempty"`
+	PageID       string   `url:"pageId,omitempty"`
 }
 
 type ListDevices struct {
