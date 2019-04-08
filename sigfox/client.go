@@ -27,7 +27,8 @@ type Client struct {
 
 	common service
 
-	Devices *DevicesService
+	Devices    *DevicesService
+	DeviceType *DeviceTypeService
 }
 
 type service struct {
@@ -55,6 +56,7 @@ func NewClient(login, password string) (*Client, error) {
 	c := &Client{HTTPClient: &http.Client{}, baseURL: parsedURL, Login: login, Password: password}
 	c.common.client = c
 	c.Devices = (*DevicesService)(&c.common)
+	c.DeviceType = (*DeviceTypeService)(&c.common)
 
 	return c, nil
 }
