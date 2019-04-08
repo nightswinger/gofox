@@ -8,25 +8,31 @@ import (
 type DeviceTypeService service
 
 type DeviceType struct {
-	ID                 string `json:"id,omitempty"`
-	AutomaticRenewal   bool   `json:"automaticRenewal,omitempty"`
-	Name               string `json:"name,omitempty"`
-	Description        string `json:"description,omitempty"`
-	KeepAlive          int64  `json:"keepAlive,omitempty"`
-	PayloadType        int32  `json:"payloadType,omitempty"`
-	AlertEmail         string `json:"alertEmail,omitempty"`
-	DownlinkMode       int32  `json:"downlinkMode,omitempty"`
-	DownlinkDataString string `json:"downlinkDataString,omitemptys"`
-	Group              struct {
-		ID string `json:"id,omitempty"`
-	} `json:"group,omitempty"`
-	Contract struct {
-		ID string `json:"id,omitempty"`
-	} `json:"contract,omitempty"`
-	CreationTime    int64  `json:"creationTime,omitempty"`
-	CreatedBy       string `json:"createdBy,omitempty"`
-	LastEditionTime int64  `json:"lastEditionTime,omitempty"`
-	LastEditedBy    string `json:"lastEditedBy,omitempty"`
+	ID                 string       `json:"id,omitempty"`
+	AutomaticRenewal   bool         `json:"automaticRenewal,omitempty"`
+	Name               string       `json:"name,omitempty"`
+	Description        string       `json:"description,omitempty"`
+	KeepAlive          int64        `json:"keepAlive,omitempty"`
+	PayloadType        int32        `json:"payloadType,omitempty"`
+	AlertEmail         string       `json:"alertEmail,omitempty"`
+	DownlinkMode       int32        `json:"downlinkMode,omitempty"`
+	DownlinkDataString string       `json:"downlinkDataString,omitemptys"`
+	Group              Group        `json:"group,omitempty"`
+	Contract           ContractInfo `json:"contract,omitempty"`
+	CreationTime       int64        `json:"creationTime,omitempty"`
+	CreatedBy          string       `json:"createdBy,omitempty"`
+	LastEditionTime    int64        `json:"lastEditionTime,omitempty"`
+	LastEditedBy       string       `json:"lastEditedBy,omitempty"`
+}
+
+type Group struct {
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+}
+
+type ContractInfo struct {
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 }
 
 type ListDeviceTypesOptions struct {
