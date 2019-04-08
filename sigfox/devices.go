@@ -15,6 +15,7 @@ type Device struct {
 	SequenceNumber      int32  `json:"sequenceNumber,omitempty"`
 	TrashSequenceNumber int32  `json:"trashSequenceNumber,omitempty"`
 	LastCom             int    `json:"lastCom,omitempty"`
+	Lqi                 int32  `json:"lqi,omitempty"`
 	AverageSnr          string `json:"averageSnr,omitempty"`
 	AverageRssi         string `json:"averageRssi,omitempty"`
 	ActivationTime      int64  `json:"activationTime,omitempty"`
