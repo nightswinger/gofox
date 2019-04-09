@@ -25,11 +25,6 @@ type DeviceType struct {
 	LastEditedBy       string       `json:"lastEditedBy,omitempty"`
 }
 
-type Group struct {
-	ID   string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-}
-
 type ContractInfo struct {
 	ID   string `json:"id,omitempty"`
 	Name string `json:"name,omitempty"`

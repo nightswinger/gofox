@@ -29,6 +29,7 @@ type Client struct {
 
 	Devices    *DevicesService
 	DeviceType *DeviceTypeService
+	Group      *GroupService
 }
 
 type service struct {
@@ -57,6 +58,7 @@ func NewClient(login, password string) (*Client, error) {
 	c.common.client = c
 	c.Devices = (*DevicesService)(&c.common)
 	c.DeviceType = (*DeviceTypeService)(&c.common)
+	c.Group = (*GroupService)(&c.common)
 
 	return c, nil
 }
