@@ -66,3 +66,39 @@ func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOption
 	}
 	return out, nil
 }
+
+type CreateDeviceTypeInput struct {
+	Name               string `json:"name,omitempty"`
+	KeepAlive          int64  `json:"keepAlive,omitempty"`
+	AlertEmail         string `json:"alertEmail,omitempty"`
+	PayloadType        int32  `json:"payloadType,omitempty"`
+	PayloadConfig      string `json:"payloadConfig,omitempty"`
+	DownlinkMode       int32  `json:"downlaodMode,omitempty"`
+	DownlinkDataString string `json:"downlinkDataString,omitempty"`
+	Description        string `json:"description,omitempty"`
+	GroupID            string `json:"groupId,omitempty"`
+	ContractID         string `json:"contractId,omitempty"`
+}
+
+type CreateDeviceTypeOutput struct {
+	ID string `json:"id,omitempty"`
+}
+
+func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, error) {
+	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var out CreateDeviceTypeOutput
+	if err = decodeBody(res, &out); err != nil {
+		return nil, err
+	}
+	fmt.Println(res)
+	return &out, nil
+}
