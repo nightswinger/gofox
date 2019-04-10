@@ -3,6 +3,7 @@ package sigfox
 import (
 	"context"
 	"fmt"
+	"net/http/httputil"
 )
 
 type DeviceTypeService service
@@ -51,7 +52,7 @@ func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOption
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +69,7 @@ type CreateDeviceTypeInput struct {
 	AlertEmail         string `json:"alertEmail,omitempty"`
 	PayloadType        int32  `json:"payloadType,omitempty"`
 	PayloadConfig      string `json:"payloadConfig,omitempty"`
-	DownlinkMode       int32  `json:"downlaodMode,omitempty"`
+	DownlinkMode       int32  `json:"downlinkMode,omitempty"`
 	DownlinkDataString string `json:"downlinkDataString,omitempty"`
 	Description        string `json:"description,omitempty"`
 	GroupID            string `json:"groupId,omitempty"`
@@ -85,10 +86,18 @@ func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeI
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(res.StatusCode)
+
+	dump, err := httputil.DumpResponse(res, true)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(string(dump))
 
 	var out CreateDeviceTypeOutput
 	if err = decodeBody(res, &out); err != nil {
