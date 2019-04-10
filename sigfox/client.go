@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"path"
@@ -87,6 +89,44 @@ func (c *Client) newRequest(ctx context.Context, method, spath string, body inte
 	req.Header.Set("Content-Type", "application/json")
 
 	return req, nil
+}
+
+type ErrorResponse struct {
+	Response *http.Response
+	Message  string `json:"message"`
+}
+
+func (r *ErrorResponse) Error() string {
+	return fmt.Sprintf("%v %v: %d %v",
+		r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode, r.Message)
+}
+
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	err = checkResponse(resp)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+func checkResponse(r *http.Response) error {
+	if c := r.StatusCode; 200 <= c && c <= 299 {
+		return nil
+	}
+
+	errorResponse := &ErrorResponse{Response: r}
+	data, err := ioutil.ReadAll(r.Body)
+	if err == nil && data != nil {
+		json.Unmarshal(data, errorResponse)
+	}
+
+	return errorResponse
 }
 
 func decodeBody(resp *http.Response, out interface{}) error {
