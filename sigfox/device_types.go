@@ -3,7 +3,7 @@ package sigfox
 import (
 	"context"
 	"fmt"
-	"net/http/httputil"
+	"net/http"
 )
 
 type DeviceTypeService service
@@ -40,27 +40,28 @@ type ListDeviceTypesOutput struct {
 	Paging Pagination   `json:"paging"`
 }
 
-func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOptions) (out *ListDeviceTypesOutput, err error) {
+func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOptions) (*ListDeviceTypesOutput, *http.Response, error) {
 	spath := fmt.Sprintf("/device-types")
-	spath, err = addOptions(spath, opt)
+	spath, err := addOptions(spath, opt)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	res, err := s.client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, res, err
 	}
 
+	var out ListDeviceTypesOutput
 	if err := decodeBody(res, &out); err != nil {
-		return nil, err
+		return nil, res, err
 	}
-	return out, nil
+	return &out, res, nil
 }
 
 type CreateDeviceTypeInput struct {
@@ -80,29 +81,21 @@ type CreateDeviceTypeOutput struct {
 	ID string `json:"id,omitempty"`
 }
 
-func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, error) {
+func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, *http.Response, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	res, err := s.client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, res, err
 	}
-
-	fmt.Println(res.StatusCode)
-
-	dump, err := httputil.DumpResponse(res, true)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println(string(dump))
 
 	var out CreateDeviceTypeOutput
 	if err = decodeBody(res, &out); err != nil {
-		return nil, err
+		return nil, res, err
 	}
-	fmt.Println(res)
-	return &out, nil
+
+	return &out, res, nil
 }
