@@ -99,3 +99,18 @@ func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeI
 
 	return &out, res, nil
 }
+
+func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*http.Response, error) {
+	spath := fmt.Sprintf("/device-types/%s", deviceTypeID)
+	req, err := s.client.newRequest(ctx, "DELETE", spath, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.Do(req)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
