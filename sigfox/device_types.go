@@ -114,3 +114,40 @@ func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*h
 
 	return res, nil
 }
+
+type ListCallbackErrorsOptions struct {
+	Since  int64 `url:"since,omitempty"`
+	Before int64 `url:"before,omitempty"`
+	Limit  int32 `url:"limit,omitempty"`
+	Offset int32 `url:"offset,omitempty"`
+}
+
+type ListCallbackErrorsOutput struct {
+	Data   []Hosts    `json:"data"`
+	Paging Pagination `json:"paging"`
+}
+
+func (s *DeviceTypeService) ListCallbackErrors(ctx context.Context, deviceTypeID string, opt *ListCallbackErrorsOptions) (*ListCallbackErrorsOutput, *http.Response, error) {
+	spath := fmt.Sprintf("/device-types/%s/callbacks-not-delivered", deviceTypeID)
+	spath, err := addOptions(spath, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.newRequest(ctx, "GET", spath, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	res, err := s.client.Do(req)
+	if err != nil {
+		return nil, res, err
+	}
+
+	var out ListCallbackErrorsOutput
+	if err := decodeBody(res, &out); err != nil {
+		return nil, res, err
+	}
+
+	return &out, res, nil
+}
