@@ -22,6 +22,13 @@ type Device struct {
 	CreationTime        int64  `json:"creationTime,omitempty"`
 	State               int32  `json:"state,omitempty"`
 	ComState            int32  `json:"comState,omitempty"`
+	//Token
+	UnsubscriptionTime     int64  `json:"unsubscriptionTime,omitempty"`
+	CreatedBy              string `json:"createdBy,omitempty"`
+	LastEditionTime        int64  `json:"lastEditionTime,omitempty"`
+	AutomaticRenewal       bool   `json:"automaticRenewal,omitempty"`
+	AutomaticRenewalStatus int32  `json:"automaticRenewalStatus,omitempty"`
+	Activable              bool   `json:"activable,omitempty"`
 }
 
 type DeviceListOptions struct {
