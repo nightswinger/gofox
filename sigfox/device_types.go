@@ -202,3 +202,24 @@ func (s *DeviceTypeService) ListCallbacks(ctx context.Context, deviceTypeID stri
 
 	return &out, res, nil
 }
+
+type UpdateCallbackInput struct {
+	Callbacks
+	ContentType string `json:"contentType"`
+}
+
+// UpdateCallback update a callback for a given device type.
+func (s *DeviceTypeService) UpdateCallback(ctx context.Context, deviceTypeID, callbackID string, input *UpdateCallbackInput) (*http.Response, error) {
+	spath := fmt.Sprintf("/device-types/%s/callbacks/%s", deviceTypeID, callbackID)
+	req, err := s.client.newRequest(ctx, "PUT", spath, input)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := s.client.Do(req)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
