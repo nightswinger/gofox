@@ -203,6 +203,35 @@ func (s *DeviceTypeService) ListCallbacks(ctx context.Context, deviceTypeID stri
 	return &out, res, nil
 }
 
+type CreateCallbackInput struct {
+	Callbacks
+	ContentType string `json:"contentType"`
+}
+
+type CreateCallbackOutput struct {
+	ID string `json:"id,omitempty"`
+}
+
+// CreateCallback create a new callback for a given device type.
+func (s *DeviceTypeService) CreateCallback(ctx context.Context, input *CreateCallbackInput) (*CreateCallbackOutput, *http.Response, error) {
+	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	res, err := s.client.Do(req)
+	if err != nil {
+		return nil, res, err
+	}
+
+	var out CreateCallbackOutput
+	if err = decodeBody(res, &out); err != nil {
+		return nil, res, err
+	}
+
+	return &out, res, nil
+}
+
 type UpdateCallbackInput struct {
 	Callbacks
 	ContentType string `json:"contentType"`
