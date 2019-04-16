@@ -40,6 +40,7 @@ type ListDeviceTypesOutput struct {
 	Paging Pagination   `json:"paging"`
 }
 
+// List retrieve a list of device types according to visibility permissions and request filters.
 func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOptions) (*ListDeviceTypesOutput, *http.Response, error) {
 	spath := fmt.Sprintf("/device-types")
 	spath, err := addOptions(spath, opt)
@@ -81,6 +82,7 @@ type CreateDeviceTypeOutput struct {
 	ID string `json:"id,omitempty"`
 }
 
+// Create a new device type.
 func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, *http.Response, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
 	if err != nil {
@@ -100,6 +102,7 @@ func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeI
 	return &out, res, nil
 }
 
+// Delete a device type.
 func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*http.Response, error) {
 	spath := fmt.Sprintf("/device-types/%s", deviceTypeID)
 	req, err := s.client.newRequest(ctx, "DELETE", spath, nil)
@@ -127,6 +130,7 @@ type ListCallbackErrorsOutput struct {
 	Paging Pagination `json:"paging"`
 }
 
+// ListCallbackErrors retrieve a list of undelivered callback messages for a given device types.
 func (s *DeviceTypeService) ListCallbackErrors(ctx context.Context, deviceTypeID string, opt *ListCallbackErrorsOptions) (*ListCallbackErrorsOutput, *http.Response, error) {
 	spath := fmt.Sprintf("/device-types/%s/callbacks-not-delivered", deviceTypeID)
 	spath, err := addOptions(spath, opt)
@@ -177,6 +181,7 @@ type Callbacks struct {
 	Message         string            `json:"message,omitempty"`
 }
 
+// ListCallbacks retrieve a list of callbacks for a given device type according to visibility permissions and request filters.
 func (s *DeviceTypeService) ListCallbacks(ctx context.Context, deviceTypeID string) (*ListCallbacksOutput, *http.Response, error) {
 	spath := fmt.Sprintf("/device-types/%s/callbacks", deviceTypeID)
 
