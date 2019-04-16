@@ -157,24 +157,24 @@ type ListCallbacksOutput struct {
 }
 
 type Callbacks struct {
-	ID              string      `json:"id"`
-	Channel         string      `json:"channel"`
-	CallbackType    int32       `json:"callbackType"`
-	CallbackSubtype int32       `json:"callbackSubtype"`
-	PayloadConfig   string      `json:"payloadConfig,omitempty"`
-	Enabled         bool        `json:"enabled"`
-	SendDuplicate   bool        `json:"sendDuplicate"`
-	Dead            bool        `json:"dead,omitempty"`
-	URL             string      `json:"url,omitempty"`
-	HTTPMethod      string      `json:"httpMethod,omitempty"`
-	DownlinkHook    bool        `json:"downlinkHook,omitempty"`
-	Headers         http.Header `json:"headers,omitempty"`
-	SendSni         bool        `json:"sendSni,omitempty"`
-	BodyTemplate    string      `json:"bodyTemplate,omitempty"`
-	LinePattern     string      `json:"linePattern,omitempty"`
-	Subject         string      `json:"subject,omitempty"`
-	Recipient       string      `json:"recipient,omitempty"`
-	Message         string      `json:"message,omitempty"`
+	ID              string            `json:"id"`
+	Channel         string            `json:"channel"`
+	CallbackType    int32             `json:"callbackType"`
+	CallbackSubtype int32             `json:"callbackSubtype"`
+	PayloadConfig   string            `json:"payloadConfig,omitempty"`
+	Enabled         bool              `json:"enabled"`
+	SendDuplicate   bool              `json:"sendDuplicate"`
+	Dead            bool              `json:"dead,omitempty"`
+	URL             string            `json:"url,omitempty"`
+	HTTPMethod      string            `json:"httpMethod,omitempty"`
+	DownlinkHook    bool              `json:"downlinkHook,omitempty"`
+	Headers         map[string]string `json:"headers,omitempty"`
+	SendSni         bool              `json:"sendSni,omitempty"`
+	BodyTemplate    string            `json:"bodyTemplate,omitempty"`
+	LinePattern     string            `json:"linePattern,omitempty"`
+	Subject         string            `json:"subject,omitempty"`
+	Recipient       string            `json:"recipient,omitempty"`
+	Message         string            `json:"message,omitempty"`
 }
 
 func (s *DeviceTypeService) ListCallbacks(ctx context.Context, deviceTypeID string) (*ListCallbacksOutput, *http.Response, error) {
