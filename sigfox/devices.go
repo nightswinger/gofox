@@ -286,8 +286,13 @@ type CbStatus struct {
 	Time   int64  `json:"time,omitempty"`
 }
 
-func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, opt *DeviceMessagesOptions) (*DeviceMessages, error) {
+func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
 	spath := fmt.Sprintf("/devices/%s/messages", deviceID)
+
+	opt := &QueryParams{}
+	for _, param := range params {
+		param(opt)
+	}
 	spath, err := addOptions(spath, opt)
 	if err != nil {
 		return nil, err

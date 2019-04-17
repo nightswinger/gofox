@@ -139,6 +139,36 @@ func decodeBody(resp *http.Response, out interface{}) error {
 	return decoder.Decode(out)
 }
 
+type QueryParams struct {
+	Fields string `url:"fields,omitempty"`
+	Since  int64  `url:"since,omitempty"`
+	Before int64  `url:"before,omitempty"`
+	Limit  int    `url:"limit,omitempty"`
+	Offset int32  `url:"offset,omitempty"`
+}
+
+type QueryParam func(*QueryParams)
+
+func Fields(s string) QueryParam {
+	return func(q *QueryParams) { q.Fields = s }
+}
+
+func Since(i int64) QueryParam {
+	return func(q *QueryParams) { q.Since = i }
+}
+
+func Before(i int64) QueryParam {
+	return func(q *QueryParams) { q.Before = i }
+}
+
+func Limit(i int) QueryParam {
+	return func(q *QueryParams) { q.Limit = i }
+}
+
+func Offset(i int32) QueryParam {
+	return func(q *QueryParams) { q.Offset = i }
+}
+
 func addOptions(s string, opt interface{}) (string, error) {
 	v := reflect.ValueOf(opt)
 	if v.Kind() == reflect.Ptr && v.IsNil() {
