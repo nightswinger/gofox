@@ -214,7 +214,8 @@ type CreateCallbackOutput struct {
 
 // CreateCallback create a new callback for a given device type.
 func (s *DeviceTypeService) CreateCallback(ctx context.Context, input *CreateCallbackInput) (*CreateCallbackOutput, *http.Response, error) {
-	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
+	spath := fmt.Sprintf("/device-types/%s/callbacks", input.ID)
+	req, err := s.client.newRequest(ctx, "POST", spath, input)
 	if err != nil {
 		return nil, nil, err
 	}
