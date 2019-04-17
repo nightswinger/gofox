@@ -118,6 +118,42 @@ func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*h
 	return res, nil
 }
 
+type ListMessagesForDeviceTypeOutput struct {
+	Data   []Message  `json:"data"`
+	Paging Pagination `json:"paging"`
+}
+
+// ListMessages retrieve a list of messages for a given device types with a 3-day history.
+func (s *DeviceTypeService) ListMessages(ctx context.Context, deviceTypeID string, params ...QueryParam) (*ListMessagesForDeviceTypeOutput, *http.Response, error) {
+	spath := fmt.Sprintf("/device-types/%s/messages", deviceTypeID)
+
+	opt := &QueryParams{}
+	for _, param := range params {
+		param(opt)
+	}
+	spath, err := addOptions(spath, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.newRequest(ctx, "GET", spath, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	res, err := s.client.HTTPClient.Do(req)
+	if err != nil {
+		return nil, res, err
+	}
+
+	var out ListMessagesForDeviceTypeOutput
+	if err := decodeBody(res, &out); err != nil {
+		return nil, res, err
+	}
+
+	return &out, res, nil
+}
+
 type ListCallbackErrorsOptions struct {
 	Since  int64 `url:"since,omitempty"`
 	Before int64 `url:"before,omitempty"`
