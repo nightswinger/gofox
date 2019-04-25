@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type DevicesService service
+type DeviceService service
 
 type Device struct {
 	ID                  string `json:"id,omitempty"`
@@ -51,7 +51,7 @@ type ListDevices struct {
 	Paging Pagination `json:"paging"`
 }
 
-func (s *DevicesService) List(ctx context.Context, opt *DeviceListOptions) (*ListDevices, error) {
+func (s *DeviceService) List(ctx context.Context, opt *DeviceListOptions) (*ListDevices, error) {
 	spath := fmt.Sprintf("/devices")
 	spath, err := addOptions(spath, opt)
 	if err != nil {
@@ -93,7 +93,7 @@ type CreateDeviceOutput struct {
 	ID string `json:"id"`
 }
 
-func (s *DevicesService) Create(ctx context.Context, body *CreateDeviceBody) (*CreateDeviceOutput, error) {
+func (s *DeviceService) Create(ctx context.Context, body *CreateDeviceBody) (*CreateDeviceOutput, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/devices", body)
 	if err != nil {
 		return nil, err
@@ -111,7 +111,7 @@ func (s *DevicesService) Create(ctx context.Context, body *CreateDeviceBody) (*C
 	return &output, nil
 }
 
-func (s *DevicesService) GetInfo(ctx context.Context, deviceID string) (*Device, error) {
+func (s *DeviceService) GetInfo(ctx context.Context, deviceID string) (*Device, error) {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
 	if err != nil {
@@ -141,7 +141,7 @@ type UpdateDeviceBody struct {
 	Activable             bool    `json:"activable,omitempty"`
 }
 
-func (s *DevicesService) UpdateDevice(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
+func (s *DeviceService) UpdateDevice(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 
 	req, err := s.client.newRequest(ctx, "PUT", spath, body)
@@ -193,7 +193,7 @@ type CallbackMedium struct {
 	Error       string `json:"error"`
 }
 
-func (s *DevicesService) ListUndeliveredCallbacks(ctx context.Context, deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
+func (s *DeviceService) ListUndeliveredCallbacks(ctx context.Context, deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
 	spath := fmt.Sprintf("/devices/%s/callbacks-not-delivered", deviceID)
 	spath, err := addOptions(spath, opt)
 	if err != nil {
@@ -218,7 +218,7 @@ func (s *DevicesService) ListUndeliveredCallbacks(ctx context.Context, deviceID 
 	return &listUndelivered, nil
 }
 
-func (s *DevicesService) DisengageSequenceNumber(ctx context.Context, deviceID string) error {
+func (s *DeviceService) DisengageSequenceNumber(ctx context.Context, deviceID string) error {
 	spath := fmt.Sprintf("/devices/%s/disengage", deviceID)
 
 	req, err := s.client.newRequest(ctx, "POST", spath, nil)
@@ -286,7 +286,7 @@ type CbStatus struct {
 	Time   int64  `json:"time,omitempty"`
 }
 
-func (s *DevicesService) GetMessages(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
+func (s *DeviceService) GetMessages(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
 	spath := fmt.Sprintf("/devices/%s/messages", deviceID)
 
 	opt := &QueryParams{}
@@ -322,7 +322,7 @@ type DeviceMetric struct {
 	LastMonth int32 `json:"lastMonth"`
 }
 
-func (s *DevicesService) GetMetric(ctx context.Context, deviceID string) (*DeviceMetric, error) {
+func (s *DeviceService) GetMetric(ctx context.Context, deviceID string) (*DeviceMetric, error) {
 	spath := fmt.Sprintf("/devices/%s/messages/metric", deviceID)
 
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
@@ -365,7 +365,7 @@ type CreateMultipleDevicesOutput struct {
 	JobID string `json:"jobId,omitempty"`
 }
 
-func (s *DevicesService) CreateMultipleWithAsync(ctx context.Context, body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
+func (s *DeviceService) CreateMultipleWithAsync(ctx context.Context, body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/devices/bulk", body)
 	if err != nil {
 		return nil, err
