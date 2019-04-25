@@ -119,11 +119,11 @@ func (s *DeviceService) CreateContext(ctx context.Context, body *CreateDeviceBod
 	return &output, nil
 }
 
-func (s *DeviceService) GetInfo(deviceID string) (*Device, error) {
-	return s.GetInfoContext(context.Background(), deviceID)
+func (s *DeviceService) Info(deviceID string) (*Device, error) {
+	return s.InfoContext(context.Background(), deviceID)
 }
 
-func (s *DeviceService) GetInfoContext(ctx context.Context, deviceID string) (*Device, error) {
+func (s *DeviceService) InfoContext(ctx context.Context, deviceID string) (*Device, error) {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
 	if err != nil {
@@ -153,11 +153,11 @@ type UpdateDeviceBody struct {
 	Activable             bool    `json:"activable,omitempty"`
 }
 
-func (s *DeviceService) UpdateDevice(deviceID string, body *UpdateDeviceBody) error {
-	return s.UpdateDeviceContext(context.Background(), deviceID, body)
+func (s *DeviceService) Update(deviceID string, body *UpdateDeviceBody) error {
+	return s.UpdateContext(context.Background(), deviceID, body)
 }
 
-func (s *DeviceService) UpdateDeviceContext(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
+func (s *DeviceService) UpdateContext(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 
 	req, err := s.client.newRequest(ctx, "PUT", spath, body)
@@ -310,11 +310,11 @@ type CbStatus struct {
 	Time   int64  `json:"time,omitempty"`
 }
 
-func (s *DeviceService) GetMessages(deviceID string, params ...QueryParam) (*DeviceMessages, error) {
-	return s.GetMessagesContext(context.Background(), deviceID, params...)
+func (s *DeviceService) Messages(deviceID string, params ...QueryParam) (*DeviceMessages, error) {
+	return s.MessagesContext(context.Background(), deviceID, params...)
 }
 
-func (s *DeviceService) GetMessagesContext(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
+func (s *DeviceService) MessagesContext(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
 	spath := fmt.Sprintf("/devices/%s/messages", deviceID)
 
 	opt := &QueryParams{}
@@ -350,11 +350,12 @@ type DeviceMetric struct {
 	LastMonth int32 `json:"lastMonth"`
 }
 
-func (s *DeviceService) GetMetric(deviceID string) (*DeviceMetric, error) {
-	return s.GetMetricContext(context.Background(), deviceID)
+// Perhaps metric is updated at 1:00AM UTC
+func (s *DeviceService) Metric(deviceID string) (*DeviceMetric, error) {
+	return s.MetricContext(context.Background(), deviceID)
 }
 
-func (s *DeviceService) GetMetricContext(ctx context.Context, deviceID string) (*DeviceMetric, error) {
+func (s *DeviceService) MetricContext(ctx context.Context, deviceID string) (*DeviceMetric, error) {
 	spath := fmt.Sprintf("/devices/%s/messages/metric", deviceID)
 
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
