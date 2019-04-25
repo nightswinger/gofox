@@ -41,7 +41,12 @@ type ListDeviceTypesOutput struct {
 }
 
 // List retrieve a list of device types according to visibility permissions and request filters.
-func (s *DeviceTypeService) List(ctx context.Context, opt *ListDeviceTypesOptions) (*ListDeviceTypesOutput, *http.Response, error) {
+func (s *DeviceTypeService) List(opt *ListDeviceTypesOptions) (*ListDeviceTypesOutput, *http.Response, error) {
+	return s.ListContext(context.Background(), opt)
+}
+
+// ListContext retrieve a list of device types according to visibility permissions and request filters with context.
+func (s *DeviceTypeService) ListContext(ctx context.Context, opt *ListDeviceTypesOptions) (*ListDeviceTypesOutput, *http.Response, error) {
 	spath := fmt.Sprintf("/device-types")
 	spath, err := addOptions(spath, opt)
 	if err != nil {
