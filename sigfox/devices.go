@@ -51,7 +51,11 @@ type ListDevices struct {
 	Paging Pagination `json:"paging"`
 }
 
-func (s *DeviceService) List(ctx context.Context, opt *DeviceListOptions) (*ListDevices, error) {
+func (s *DeviceService) List(opt *DeviceListOptions) (*ListDevices, error) {
+	return s.ListContext(context.Background(), opt)
+}
+
+func (s *DeviceService) ListContext(ctx context.Context, opt *DeviceListOptions) (*ListDevices, error) {
 	spath := fmt.Sprintf("/devices")
 	spath, err := addOptions(spath, opt)
 	if err != nil {
@@ -93,7 +97,11 @@ type CreateDeviceOutput struct {
 	ID string `json:"id"`
 }
 
-func (s *DeviceService) Create(ctx context.Context, body *CreateDeviceBody) (*CreateDeviceOutput, error) {
+func (s *DeviceService) Create(body *CreateDeviceBody) (*CreateDeviceOutput, error) {
+	return s.CreateContext(context.Background(), body)
+}
+
+func (s *DeviceService) CreateContext(ctx context.Context, body *CreateDeviceBody) (*CreateDeviceOutput, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/devices", body)
 	if err != nil {
 		return nil, err
@@ -111,7 +119,11 @@ func (s *DeviceService) Create(ctx context.Context, body *CreateDeviceBody) (*Cr
 	return &output, nil
 }
 
-func (s *DeviceService) GetInfo(ctx context.Context, deviceID string) (*Device, error) {
+func (s *DeviceService) GetInfo(deviceID string) (*Device, error) {
+	return s.GetInfoContext(context.Background(), deviceID)
+}
+
+func (s *DeviceService) GetInfoContext(ctx context.Context, deviceID string) (*Device, error) {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
 	if err != nil {
@@ -141,7 +153,11 @@ type UpdateDeviceBody struct {
 	Activable             bool    `json:"activable,omitempty"`
 }
 
-func (s *DeviceService) UpdateDevice(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
+func (s *DeviceService) UpdateDevice(deviceID string, body *UpdateDeviceBody) error {
+	return s.UpdateDeviceContext(context.Background(), deviceID, body)
+}
+
+func (s *DeviceService) UpdateDeviceContext(ctx context.Context, deviceID string, body *UpdateDeviceBody) error {
 	spath := fmt.Sprintf("/devices/%s", deviceID)
 
 	req, err := s.client.newRequest(ctx, "PUT", spath, body)
@@ -193,7 +209,11 @@ type CallbackMedium struct {
 	Error       string `json:"error"`
 }
 
-func (s *DeviceService) ListUndeliveredCallbacks(ctx context.Context, deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
+func (s *DeviceService) ListUndeliveredCallbacks(deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
+	return s.ListUndeliveredCallbacksContext(context.Background(), deviceID, opt)
+}
+
+func (s *DeviceService) ListUndeliveredCallbacksContext(ctx context.Context, deviceID string, opt *UndeliveredCallbacksOptions) (*UndeliveredCallbacks, error) {
 	spath := fmt.Sprintf("/devices/%s/callbacks-not-delivered", deviceID)
 	spath, err := addOptions(spath, opt)
 	if err != nil {
@@ -218,7 +238,11 @@ func (s *DeviceService) ListUndeliveredCallbacks(ctx context.Context, deviceID s
 	return &listUndelivered, nil
 }
 
-func (s *DeviceService) DisengageSequenceNumber(ctx context.Context, deviceID string) error {
+func (s *DeviceService) DisengageSequenceNumber(deviceID string) error {
+	return s.DisengageSequenceNumberContext(context.Background(), deviceID)
+}
+
+func (s *DeviceService) DisengageSequenceNumberContext(ctx context.Context, deviceID string) error {
 	spath := fmt.Sprintf("/devices/%s/disengage", deviceID)
 
 	req, err := s.client.newRequest(ctx, "POST", spath, nil)
@@ -286,7 +310,11 @@ type CbStatus struct {
 	Time   int64  `json:"time,omitempty"`
 }
 
-func (s *DeviceService) GetMessages(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
+func (s *DeviceService) GetMessages(deviceID string, params ...QueryParam) (*DeviceMessages, error) {
+	return s.GetMessagesContext(context.Background(), deviceID, params...)
+}
+
+func (s *DeviceService) GetMessagesContext(ctx context.Context, deviceID string, params ...QueryParam) (*DeviceMessages, error) {
 	spath := fmt.Sprintf("/devices/%s/messages", deviceID)
 
 	opt := &QueryParams{}
@@ -322,7 +350,11 @@ type DeviceMetric struct {
 	LastMonth int32 `json:"lastMonth"`
 }
 
-func (s *DeviceService) GetMetric(ctx context.Context, deviceID string) (*DeviceMetric, error) {
+func (s *DeviceService) GetMetric(deviceID string) (*DeviceMetric, error) {
+	return s.GetMetricContext(context.Background(), deviceID)
+}
+
+func (s *DeviceService) GetMetricContext(ctx context.Context, deviceID string) (*DeviceMetric, error) {
 	spath := fmt.Sprintf("/devices/%s/messages/metric", deviceID)
 
 	req, err := s.client.newRequest(ctx, "GET", spath, nil)
@@ -365,7 +397,11 @@ type CreateMultipleDevicesOutput struct {
 	JobID string `json:"jobId,omitempty"`
 }
 
-func (s *DeviceService) CreateMultipleWithAsync(ctx context.Context, body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
+func (s *DeviceService) CreateMultipleWithAsync(body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
+	return s.CreateMultipleWithAsyncContext(context.Background(), body)
+}
+
+func (s *DeviceService) CreateMultipleWithAsyncContext(ctx context.Context, body *CreateMultipleDevicesBody) (*CreateMultipleDevicesOutput, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/devices/bulk", body)
 	if err != nil {
 		return nil, err
