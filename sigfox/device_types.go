@@ -83,7 +83,12 @@ type CreateDeviceTypeOutput struct {
 }
 
 // Create a new device type.
-func (s *DeviceTypeService) Create(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, *http.Response, error) {
+func (s *DeviceTypeService) Create(input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, *http.Response, error) {
+	return s.CreateContext(context.Background(), input)
+}
+
+// CreateContext a new device type with context.
+func (s *DeviceTypeService) CreateContext(ctx context.Context, input *CreateDeviceTypeInput) (*CreateDeviceTypeOutput, *http.Response, error) {
 	req, err := s.client.newRequest(ctx, "POST", "/device-types", input)
 	if err != nil {
 		return nil, nil, err
