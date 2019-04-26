@@ -29,6 +29,7 @@ type Client struct {
 
 	common service
 
+	ApiUser    *ApiUserService
 	Device     *DeviceService
 	DeviceType *DeviceTypeService
 	Group      *GroupService
@@ -58,6 +59,7 @@ func NewClient(login, password string) (*Client, error) {
 
 	c := &Client{HTTPClient: &http.Client{}, baseURL: parsedURL, Login: login, Password: password}
 	c.common.client = c
+	c.ApiUser = (*ApiUserService)(&c.common)
 	c.Device = (*DeviceService)(&c.common)
 	c.DeviceType = (*DeviceTypeService)(&c.common)
 	c.Group = (*GroupService)(&c.common)
@@ -140,11 +142,13 @@ func decodeBody(resp *http.Response, out interface{}) error {
 }
 
 type QueryParams struct {
-	Fields string `url:"fields,omitempty"`
-	Since  int64  `url:"since,omitempty"`
-	Before int64  `url:"before,omitempty"`
-	Limit  int    `url:"limit,omitempty"`
-	Offset int32  `url:"offset,omitempty"`
+	Fields    string   `url:"fields,omitempty"`
+	Since     int64    `url:"since,omitempty"`
+	Before    int64    `url:"before,omitempty"`
+	Limit     int      `url:"limit,omitempty"`
+	Offset    int32    `url:"offset,omitempty"`
+	ProfileID string   `url:"profileId,omitempty"`
+	GroupIds  []string `url:"groupIds,omitempty"`
 }
 
 type QueryParam func(*QueryParams)
@@ -167,6 +171,14 @@ func Limit(i int) QueryParam {
 
 func Offset(i int32) QueryParam {
 	return func(q *QueryParams) { q.Offset = i }
+}
+
+func ProfileID(id string) QueryParam {
+	return func(q *QueryParams) { q.ProfileID = id }
+}
+
+func GroupIds(s []string) QueryParam {
+	return func(q *QueryParams) { q.GroupIds = s }
 }
 
 func addOptions(s string, opt interface{}) (string, error) {
