@@ -112,6 +112,42 @@ func (s *DeviceTypeService) CreateContext(ctx context.Context, input *CreateDevi
 	return &out, res, nil
 }
 
+// Info retrieve information about a device type.
+func (s *DeviceTypeService) Info(deviceTypeID string, params ...QueryParam) (*DeviceType, *http.Response, error) {
+	return s.InfoContext(context.Background(), deviceTypeID, params...)
+}
+
+// InfoContext retrieve information abount a device type with context.
+func (s *DeviceTypeService) InfoContext(ctx context.Context, deviceTypeID string, params ...QueryParam) (*DeviceType, *http.Response, error) {
+	opt := &QueryParams{}
+	for _, param := range params {
+		param(opt)
+	}
+
+	spath := fmt.Sprintf("device-types/%s", deviceTypeID)
+	spath, err := addOptions(spath, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.newRequest(ctx, "GET", spath, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	res, err := s.client.Do(req)
+	if err != nil {
+		return nil, res, err
+	}
+
+	var out DeviceType
+	if err := decodeBody(res, &out); err != nil {
+		return nil, res, err
+	}
+
+	return &out, res, nil
+}
+
 // Delete a device type.
 func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*http.Response, error) {
 	spath := fmt.Sprintf("/device-types/%s", deviceTypeID)
