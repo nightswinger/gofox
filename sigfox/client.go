@@ -103,9 +103,15 @@ func (r *ErrorResponse) Error() string {
 		r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode, r.Message)
 }
 
-func (c *Client) Do(req *http.Request) (*http.Response, error) {
+// Do sends an API request and returns the API response.
+func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
 		return nil, err
 	}
 

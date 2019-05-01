@@ -58,7 +58,7 @@ func (s *DeviceTypeService) ListContext(ctx context.Context, opt *ListDeviceType
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -99,7 +99,7 @@ func (s *DeviceTypeService) CreateContext(ctx context.Context, input *CreateDevi
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -135,7 +135,7 @@ func (s *DeviceTypeService) InfoContext(ctx context.Context, deviceTypeID string
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -156,7 +156,7 @@ func (s *DeviceTypeService) Delete(ctx context.Context, deviceTypeID string) (*h
 		return nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return res, err
 	}
@@ -225,7 +225,7 @@ func (s *DeviceTypeService) ListCallbackErrors(ctx context.Context, deviceTypeID
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -272,7 +272,7 @@ func (s *DeviceTypeService) ListCallbacks(ctx context.Context, deviceTypeID stri
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -302,7 +302,7 @@ func (s *DeviceTypeService) CreateCallback(ctx context.Context, input *CreateCal
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -328,7 +328,7 @@ func (s *DeviceTypeService) UpdateCallback(ctx context.Context, deviceTypeID, ca
 		return nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return res, err
 	}

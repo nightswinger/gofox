@@ -47,7 +47,7 @@ func (s *GroupService) List(ctx context.Context, opt *ListGroupsOptions) (*ListG
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}

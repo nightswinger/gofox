@@ -130,7 +130,7 @@ func (s *DeviceService) InfoContext(ctx context.Context, deviceID string) (*Devi
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (s *DeviceService) UpdateContext(ctx context.Context, deviceID string, body
 		return err
 	}
 
-	_, err = s.client.HTTPClient.Do(req)
+	_, err = s.client.Do(ctx, req)
 	if err != nil {
 		return err
 	}
@@ -225,7 +225,7 @@ func (s *DeviceService) ListUndeliveredCallbacksContext(ctx context.Context, dev
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (s *DeviceService) DisengageSequenceNumberContext(ctx context.Context, devi
 	if err != nil {
 		return err
 	}
-	_, err = s.client.HTTPClient.Do(req)
+	_, err = s.client.Do(ctx, req)
 	if err != nil {
 		return err
 	}
@@ -331,7 +331,7 @@ func (s *DeviceService) MessagesContext(ctx context.Context, deviceID string, pa
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +362,7 @@ func (s *DeviceService) MetricContext(ctx context.Context, deviceID string) (*De
 	if err != nil {
 		return nil, err
 	}
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -408,7 +408,7 @@ func (s *DeviceService) CreateMultipleWithAsyncContext(ctx context.Context, body
 		return nil, err
 	}
 
-	res, err := s.client.HTTPClient.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}

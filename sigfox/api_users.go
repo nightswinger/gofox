@@ -56,7 +56,7 @@ func (s *ApiUserService) ListContext(ctx context.Context, params ...QueryParam) 
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
@@ -90,7 +90,7 @@ func (s *ApiUserService) InfoContext(ctx context.Context, ApiUserID string, para
 		return nil, nil, err
 	}
 
-	res, err := s.client.Do(req)
+	res, err := s.client.Do(ctx, req)
 	if err != nil {
 		return nil, res, err
 	}
