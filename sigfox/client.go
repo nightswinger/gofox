@@ -18,6 +18,7 @@ import (
 
 const (
 	defaultBaseURL = "https://api.sigfox.com/v2"
+	userAgent      = "gofox"
 )
 
 type Client struct {
@@ -57,7 +58,7 @@ func NewClient(login, password string) (*Client, error) {
 		return nil, errors.Wrapf(err, "failed to parse url: %s", defaultBaseURL)
 	}
 
-	c := &Client{HTTPClient: &http.Client{}, baseURL: parsedURL, Login: login, Password: password}
+	c := &Client{HTTPClient: &http.Client{}, baseURL: parsedURL, UserAgent: userAgent, Login: login, Password: password}
 	c.common.client = c
 	c.ApiUser = (*ApiUserService)(&c.common)
 	c.Device = (*DeviceService)(&c.common)
