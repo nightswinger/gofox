@@ -25,11 +25,6 @@ type MinimalGroup struct {
 	Level int32  `json:"level,omitempty"`
 }
 
-type Profile struct {
-	ID   string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-}
-
 type ListApiUsersOutput struct {
 	Data   []ApiUser  `json:"data"`
 	Paging Pagination `json:"paging"`
