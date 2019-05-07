@@ -36,6 +36,7 @@ type Client struct {
 	DeviceType *DeviceTypeService
 	Group      *GroupService
 	Profile    *ProfileService
+	Tile       *TileService
 }
 
 type service struct {
@@ -68,6 +69,7 @@ func NewClient(login, password string) (*Client, error) {
 	c.DeviceType = (*DeviceTypeService)(&c.common)
 	c.Group = (*GroupService)(&c.common)
 	c.Profile = (*ProfileService)(&c.common)
+	c.Tile = (*TileService)(&c.common)
 
 	return c, nil
 }
