@@ -19,6 +19,13 @@ Construct a new Sigfox client, then use services on the client to access differe
 ```go
 client := sigfox.NewClient("API_LOGIN_ID", "API_PASSWORD")
 
+// Get device list
+list, err := client.Device.List(nil)
+
 // Get device messages
-msg, _ := client.Device.Messages("DeviceID")
+msg, err := client.Device.Messages("DeviceID")
+
+// Get device type information with context
+ctx := context.Background()
+info, err := client.DeviceType.InfoContext(ctx, "DeviceID")
 ```
